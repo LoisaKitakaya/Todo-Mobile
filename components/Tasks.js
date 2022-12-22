@@ -1,11 +1,45 @@
-import { ScrollView, StyleSheet, TouchableHighlight } from "react-native";
+import { View, StyleSheet, TouchableHighlight } from "react-native";
 import { ListItem, Badge } from "@rneui/themed";
+import { useEffect, useState } from "react";
 
 import data from ".././data.json";
+import axios from "axios";
+import ViewTask from "./ViewTask";
 
 const allTasks = data.data;
 
 export default function Tasks() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [providedData, setProvidedData] = useState({});
+
+  const fetchData = async () => {
+    const url = "https://todo-flask-api.onrender.com/api/todo/";
+    const config = {
+      headers: {
+        "x-api-key":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        Accept: "application/json",
+      },
+    };
+
+    try {
+      const resp = await axios.get(url, config);
+      const data = await resp.data;
+      setData(data.data.payload);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const badgeFilter = (label) => {
     if (label === "Personal") {
       return "success";
@@ -18,16 +52,23 @@ export default function Tasks() {
     }
   };
 
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
+
   return (
-    <ScrollView style={styles.tasksContainer}>
-      {allTasks.map((task, index) => {
+    <View style={styles.tasksContainer}>
+      {data.map((task, index) => {
         return (
           <ListItem
             key={index}
             bottomDivider
             Component={TouchableHighlight}
             pad={20}
-            onPress={() => console.log("Press")}
+            onPress={() => {
+              toggleOverlay();
+              setProvidedData(task);
+            }}
           >
             <ListItem.Content>
               <ListItem.Content
@@ -40,17 +81,29 @@ export default function Tasks() {
                   marginBottom: 10,
                 }}
               >
-                <ListItem.Title>{task.task}</ListItem.Title>
+                <ListItem.Title
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  {task.task}
+                </ListItem.Title>
                 <ListItem.Subtitle>
                   <Badge value={task.label} status={badgeFilter(task.label)} />
                 </ListItem.Subtitle>
               </ListItem.Content>
-              <ListItem.Subtitle>Due: {task.due}</ListItem.Subtitle>
+              <ListItem.Subtitle>Due: {task.due_date}</ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         );
       })}
-    </ScrollView>
+      <ViewTask
+        visible={visible}
+        toggleOverlay={toggleOverlay}
+        providedData={providedData}
+        badgeFilter={badgeFilter}
+      />
+    </View>
   );
 }
 
@@ -58,5 +111,6 @@ const styles = StyleSheet.create({
   tasksContainer: {
     flex: 1,
     height: "100%",
+    flexDirection: "column-reverse",
   },
 });
