@@ -1,10 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from "@rneui/base";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+
+import Banner from "./components/Banner";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Banner />
+      <View style={styles.subContainer}>
+        <Text>This is very weird</Text>
+      </View>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +19,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#cffafe",
+  },
+  subContainer: {
+    padding: 8,
   },
 });
