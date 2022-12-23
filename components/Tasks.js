@@ -1,6 +1,7 @@
 import { View, StyleSheet, TouchableHighlight } from "react-native";
 import { ListItem, Badge } from "@rneui/themed";
 import { useEffect, useState } from "react";
+import { API_KEY } from "@env";
 
 import axios from "axios";
 
@@ -18,8 +19,7 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
     const url = "https://todo-flask-api.onrender.com/api/todo/";
     const config = {
       headers: {
-        "x-api-key":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "x-api-key": `${API_KEY}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",

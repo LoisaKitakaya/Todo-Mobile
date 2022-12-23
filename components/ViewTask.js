@@ -1,5 +1,6 @@
 import { Button, Overlay, Divider, Badge } from "@rneui/themed";
 import { View, StyleSheet, Text } from "react-native";
+import { API_KEY } from "@env";
 
 export default function ViewTask({
   visible,
@@ -20,8 +21,7 @@ export default function ViewTask({
       method: "PATCH",
       body: JSON.stringify(data),
       headers: {
-        "x-api-key":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "x-api-key": `${API_KEY}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
@@ -46,8 +46,7 @@ export default function ViewTask({
     const options = {
       method: "DELETE",
       headers: {
-        "x-api-key":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "x-api-key": `${API_KEY}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",

@@ -1,6 +1,7 @@
 import { Button, Overlay, Divider, Input } from "@rneui/themed";
 import { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
+import { API_KEY } from "@env";
 
 export default function AddTask({
   visibleModal,
@@ -27,8 +28,7 @@ export default function AddTask({
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "x-api-key":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "x-api-key": `${API_KEY}`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
