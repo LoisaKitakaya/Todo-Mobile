@@ -8,6 +8,12 @@ import Tasks from "./components/Tasks";
 
 export default function App() {
   const [index, setIndex] = useState(0);
+  const [visibleModal, setVisibleModal] = useState(false);
+
+  const toggleModalOverlay = () => {
+    setVisibleModal(!visibleModal);
+  };
+
   return (
     <View style={styles.container}>
       <Banner />
@@ -45,7 +51,10 @@ export default function App() {
             <Text style={{ fontSize: 40, marginLeft: 13, marginTop: 20 }}>
               Todo List
             </Text>
-            <Tasks />
+            <Tasks
+              visibleModal={visibleModal}
+              toggleModalOverlay={toggleModalOverlay}
+            />
             <View
               style={{
                 paddingBottom: 20,
@@ -70,6 +79,7 @@ export default function App() {
         }}
         icon={{ name: "add", color: "black" }}
         color="#b6c7db"
+        onPress={() => toggleModalOverlay()}
       />
       <StatusBar style="auto" />
     </View>

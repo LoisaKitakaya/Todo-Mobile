@@ -2,13 +2,12 @@ import { View, StyleSheet, TouchableHighlight } from "react-native";
 import { ListItem, Badge } from "@rneui/themed";
 import { useEffect, useState } from "react";
 
-import data from ".././data.json";
 import axios from "axios";
+
 import ViewTask from "./ViewTask";
+import AddTask from "./AddTask";
 
-const allTasks = data.data;
-
-export default function Tasks() {
+export default function Tasks({ visibleModal, toggleModalOverlay }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
@@ -102,6 +101,10 @@ export default function Tasks() {
         toggleOverlay={toggleOverlay}
         providedData={providedData}
         badgeFilter={badgeFilter}
+      />
+      <AddTask
+        visibleModal={visibleModal}
+        toggleModalOverlay={toggleModalOverlay}
       />
     </View>
   );
