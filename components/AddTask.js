@@ -9,10 +9,10 @@ export default function AddTask({
   updated,
   setUpdated,
 }) {
-  const [task, setTask] = useState("Task");
-  const [label, setLabel] = useState("Label");
-  const [description, setDescription] = useState("Description");
-  const [date, setDate] = useState("Due Date");
+  const [task, setTask] = useState("");
+  const [label, setLabel] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
 
   const postData = async () => {
     const url = "https://todo-flask-api.onrender.com/api/todo/";
@@ -53,13 +53,26 @@ export default function AddTask({
         <View style={{ width: 300 }}>
           <Text style={{ fontSize: 18 }}>Add new task</Text>
           <Divider style={{ marginTop: 5, marginBottom: 5 }} />
-          <Input placeholder={task} onChangeText={(text) => setTask(text)} />
-          <Input placeholder={label} onChangeText={(text) => setLabel(text)} />
           <Input
-            placeholder={description}
+            value={task}
+            placeholder="Task"
+            onChangeText={(text) => setTask(text)}
+          />
+          <Input
+            value={label}
+            placeholder="Label"
+            onChangeText={(text) => setLabel(text)}
+          />
+          <Input
+            value={description}
+            placeholder="Description"
             onChangeText={(text) => setDescription(text)}
           />
-          <Input placeholder={date} onChangeText={(text) => setDate(text)} />
+          <Input
+            value={date}
+            placeholder="Due Date"
+            onChangeText={(text) => setDate(text)}
+          />
           <View style={{ marginTop: 10, marginBottom: 5 }}>
             <Button
               color="secondary"

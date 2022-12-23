@@ -1,8 +1,7 @@
 import { View, StyleSheet, TouchableHighlight } from "react-native";
-import { ListItem, Badge } from "@rneui/themed";
+import { ListItem, Badge, Overlay, Text } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import { API_KEY } from "@env";
-
 import axios from "axios";
 
 import ViewTask from "./ViewTask";
@@ -10,7 +9,7 @@ import AddTask from "./AddTask";
 
 export default function Tasks({ visibleModal, toggleModalOverlay }) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [providedData, setProvidedData] = useState({});
   const [updated, setUpdated] = useState(false);
@@ -61,61 +60,72 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
   };
 
   return (
-    <View style={styles.tasksContainer}>
-      {data.map((task, index) => {
-        return (
-          <ListItem
-            key={index}
-            bottomDivider
-            Component={TouchableHighlight}
-            pad={20}
-            onPress={() => {
-              toggleOverlay();
-              setProvidedData(task);
-            }}
-          >
-            <ListItem.Content>
-              <ListItem.Content
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  width: "100%",
-                  alignItems: "center",
-                  marginBottom: 10,
+    <>
+      {loading ? (
+        <Overlay isVisible={true}>
+          <Text>Loading...</Text>
+        </Overlay>
+      ) : (
+        <View style={styles.tasksContainer}>
+          {data.map((task, index) => {
+            return (
+              <ListItem
+                key={index}
+                bottomDivider
+                Component={TouchableHighlight}
+                pad={20}
+                onPress={() => {
+                  toggleOverlay();
+                  setProvidedData(task);
                 }}
               >
-                <ListItem.Title
-                  style={{
-                    fontWeight: "bold",
-                  }}
-                >
-                  {task.task}
-                </ListItem.Title>
-                <ListItem.Subtitle>
-                  <Badge value={task.label} status={badgeFilter(task.label)} />
-                </ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Subtitle>Due: {task.due_date}</ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        );
-      })}
-      <ViewTask
-        visible={visible}
-        toggleOverlay={toggleOverlay}
-        providedData={providedData}
-        badgeFilter={badgeFilter}
-        setUpdated={setUpdated}
-        updated={updated}
-      />
-      <AddTask
-        visibleModal={visibleModal}
-        toggleModalOverlay={toggleModalOverlay}
-        setUpdated={setUpdated}
-        updated={updated}
-      />
-    </View>
+                <ListItem.Content>
+                  <ListItem.Content
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      alignItems: "center",
+                      marginBottom: 10,
+                    }}
+                  >
+                    <ListItem.Title
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {task.task}
+                    </ListItem.Title>
+                    <ListItem.Subtitle>
+                      <Badge
+                        value={task.label}
+                        status={badgeFilter(task.label)}
+                      />
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Subtitle>Due: {task.due_date}</ListItem.Subtitle>
+                </ListItem.Content>
+              </ListItem>
+            );
+          })}
+          <ViewTask
+            visible={visible}
+            toggleOverlay={toggleOverlay}
+            providedData={providedData}
+            badgeFilter={badgeFilter}
+            setUpdated={setUpdated}
+            updated={updated}
+          />
+          <AddTask
+            visibleModal={visibleModal}
+            toggleModalOverlay={toggleModalOverlay}
+            setUpdated={setUpdated}
+            updated={updated}
+          />
+        </View>
+      )}
+    </>
   );
 }
 
