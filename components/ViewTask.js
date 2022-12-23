@@ -6,7 +6,66 @@ export default function ViewTask({
   toggleOverlay,
   providedData,
   badgeFilter,
+  updated,
+  setUpdated,
 }) {
+  const patchData = async (status) => {
+    const url = `https://todo-flask-api.onrender.com/api/todo/${providedData.id}/`;
+
+    const data = {
+      complete: status,
+    };
+
+    const options = {
+      method: "PATCH",
+      body: JSON.stringify(data),
+      headers: {
+        "x-api-key":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        Accept: "application/json",
+      },
+    };
+
+    try {
+      const resp = await fetch(url, options);
+      const data = await resp.json();
+      console.log(data.data.payload);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setUpdated(!updated);
+  };
+
+  const deleteData = async () => {
+    const url = `https://todo-flask-api.onrender.com/api/todo/${providedData.id}/`;
+
+    const options = {
+      method: "DELETE",
+      headers: {
+        "x-api-key":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwdWJsaWNfaWQiOiJiYjQyMzcwYzNmMzE0MTA0ODcxZGM1OTBlZjdmYWViZSJ9.o59LgFsKIYMLLkkGhQKwgJGQCQKOribNutpExK8Tqwc",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        Accept: "application/json",
+      },
+    };
+
+    try {
+      const resp = await fetch(url, options);
+      const data = await resp.json();
+      console.log(data.data.payload);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setUpdated(!updated);
+  };
+
   return (
     <View>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
@@ -80,18 +139,31 @@ export default function ViewTask({
               <Button
                 color="warning"
                 title="Mark as incomplete"
-                onPress={toggleOverlay}
+                onPress={() => {
+                  patchData("false");
+                  toggleOverlay();
+                }}
               />
             ) : (
               <Button
                 color="success"
                 title="Mark as complete"
-                onPress={toggleOverlay}
+                onPress={() => {
+                  patchData("true");
+                  toggleOverlay();
+                }}
               />
             )}
           </View>
           <View style={{ marginTop: 10, marginBottom: 5 }}>
-            <Button color="error" title="Delete task" onPress={toggleOverlay} />
+            <Button
+              color="error"
+              title="Delete task"
+              onPress={() => {
+                deleteData();
+                toggleOverlay();
+              }}
+            />
           </View>
         </View>
       </Overlay>

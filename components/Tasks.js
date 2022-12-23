@@ -12,6 +12,7 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [providedData, setProvidedData] = useState({});
+  const [updated, setUpdated] = useState(false);
 
   const fetchData = async () => {
     const url = "https://todo-flask-api.onrender.com/api/todo/";
@@ -26,6 +27,8 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
       },
     };
 
+    setLoading(true);
+
     try {
       const resp = await axios.get(url, config);
       const data = await resp.data;
@@ -33,11 +36,13 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
     } catch (error) {
       console.log(error);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [updated]);
 
   const badgeFilter = (label) => {
     if (label === "Personal") {
@@ -101,10 +106,14 @@ export default function Tasks({ visibleModal, toggleModalOverlay }) {
         toggleOverlay={toggleOverlay}
         providedData={providedData}
         badgeFilter={badgeFilter}
+        setUpdated={setUpdated}
+        updated={updated}
       />
       <AddTask
         visibleModal={visibleModal}
         toggleModalOverlay={toggleModalOverlay}
+        setUpdated={setUpdated}
+        updated={updated}
       />
     </View>
   );
